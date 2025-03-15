@@ -250,6 +250,51 @@ def chat_completion_nvidia(model, conv, temperature, max_tokens, api_dict=None) 
     after=retry_log,
     retry_error_callback=retry_fail
 )
+def chat_completion_qianfan(model, conv, temperature, max_tokens, api_dict=None) -> tuple[str, int]:
+    import json, requests, time
+
+    api_key = os.environ.get('QIANFAN_API_KEY', '')
+    api_url = os.environ.get('QIANFAN_API_URL', '')
+    api_timeout = os.environ.get('QIANFAN_API_TIMEOUT', '240')
+    api_debug = os.environ.get('QIANFAN_API_DEBUG', '').lower()
+    api_debug = api_debug == 'true' or api_debug == 'on' or api_debug == '1'
+
+    if len(api_url) == 0:
+        raise Exception("QIANFAN_API_URL is empty")
+
+    header = {
+        "Content-Type": "application/json"
+    }
+
+    start = time.time()
+
+    if len(api_key) > 0:
+        header["Authorization"] = "Bearer " + api_key
+
+    messages = conv.to_openai_api_messages()
+    data = {"messages": messages}
+    data = json.dumps(data)
+
+    try:
+        response = requests.post(api_url, data=data, headers=header, timeout=int(api_timeout))
+
+        if api_debug:
+            print('[DEBUG] cost:%.2f request:%s \033[32m<--------------->\033[0m response:%s' % (time.time() - start, data, response.text))
+
+        response = json.loads(response.text)
+        return response['result'], response['usage']['completion_tokens']
+    except Exception as e:
+        if api_debug:
+            print('[DEBUG] cost:%.2f request:%s' % (time.time() - start, data))
+        raise e
+
+@retry(
+    stop=stop_after_attempt(API_MAX_RETRY),
+    wait=wait_fixed(API_RETRY_SLEEP),
+    retry=retry_if_exception_type(Exception),
+    after=retry_log,
+    retry_error_callback=retry_fail
+)
 def chat_completion_xai(model, conv, temperature, max_tokens, api_dict=None) -> tuple[str, int]:
     if api_dict is not None and "api_key" in api_dict:
         api_key = api_dict["api_key"]

@@ -250,8 +250,17 @@ def gen_judgments(
 
     if "instruction_following" in bench_name:
         # instruction following tasks are evaluated differently from all other tasks
-        nltk.download('punkt')
-        nltk.download('punkt_tab')
+        home_directory = os.path.expanduser("~")
+        if os.path.exists(home_directory + '/nltk_data/tokenizers/punkt'):
+            print('punkt existed.')
+        else:
+            nltk.download('punkt')
+
+        if os.path.exists(home_directory + '/nltk_data/tokenizers/punkt_tab'):
+            print('punkt_tab existed.')
+        else:
+            nltk.download('punkt_tab')
+
         task_name = matches[0].question['task']
 
         if model_list is None:

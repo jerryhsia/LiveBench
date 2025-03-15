@@ -6,6 +6,7 @@ __pycache__/
 *.egg-info
 dist
 .venv
+venv
 
 # Log
 *.log
@@ -27,12 +28,20 @@ output
 
 # Data
 *.pkl
-*.csv
+/*.csv
+
+/data
+/data-*
+/livebench/data
+/livebench/data-*
+/livebench/*.csv
+/livebench/load_dataset.py
+/run_livebench.sh
+/nltk_data
+/huggingface
+/run.sh
 
 # Build
 build
-
-
-data
 
 core

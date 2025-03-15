@@ -1,0 +1,19 @@
+# torch （单独安装 pip3 install torch --index-url https://download.pytorch.org/whl/cpu --no-cache-dir）
+libtmux
+shortuuid
+tqdm
+libtmux
+datasets
+psutil
+fastchat
+transformers
+accelerate
+tenacity
+httpx
+nltk
+lark
+pyext
+langdetect
+immutabledict
+lxml
+Levenshtein

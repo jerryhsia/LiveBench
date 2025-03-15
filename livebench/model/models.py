@@ -12,6 +12,7 @@ from livebench.model.model_adapter import (
     CohereAdapter,
     DeepseekChatAdapter,
     NvidiaChatAdapter,
+    QianfanChatAdapter,
     GemmaAdapter,
 )
 from livebench.model.completions import (
@@ -24,6 +25,7 @@ from livebench.model.completions import (
     chat_completion_xai,
     chat_completion_deepseek,
     chat_completion_nvidia,
+    chat_completion_qianfan,
     chat_completion_together,
 )
 import os
@@ -126,6 +128,13 @@ class NvidiaModel(Model):
     adapter: BaseModelAdapter = field(default=NvidiaChatAdapter())
     api_function: model_api_function = field(
         default=chat_completion_nvidia
+    )
+
+@dataclass(kw_only=True, frozen=True)
+class QianfanModel(Model):
+    adapter: BaseModelAdapter = field(default=QianfanChatAdapter())
+    api_function: model_api_function = field(
+        default=chat_completion_qianfan
     )
 
 

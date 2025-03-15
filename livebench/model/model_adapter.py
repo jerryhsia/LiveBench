@@ -2282,6 +2282,15 @@ class NvidiaChatAdapter(BaseModelAdapter):
     def get_default_conv_template(self, model_path: str) -> Conversation:
         return get_conv_template("api_based_default")
 
+class QianfanChatAdapter(BaseModelAdapter):
+    """The model adapter for nemotron's chat models"""
+
+    def match(self, model_path: str):
+        return True
+
+    def get_default_conv_template(self, model_path: str) -> Conversation:
+        return get_conv_template("api_based_default")
+
 
 class Yuan2Adapter(BaseModelAdapter):
     """The model adapter for Yuan2.0"""
@@ -2573,6 +2582,7 @@ register_model_adapter(YiAdapter)
 register_model_adapter(PplxAIAdapter)
 register_model_adapter(DeepseekCoderAdapter)
 register_model_adapter(NvidiaChatAdapter)
+register_model_adapter(QianfanChatAdapter)
 register_model_adapter(DeepseekChatAdapter)
 register_model_adapter(Yuan2Adapter)
 register_model_adapter(MetaMathAdapter)
